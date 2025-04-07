@@ -21,7 +21,7 @@ defmodule ElixirMpesa do
   Add the following to your `config/config.exs`:
 
   ```elixir
-  config :ex_mpesa,
+  config :elixir_mpesa,
     api_type: "sandbox", # or "openapi" for production
     input_currency: "LSL", # Currency code (e.g., "LSL" for Lesotho Loti)
     input_country: "LES", # Country code

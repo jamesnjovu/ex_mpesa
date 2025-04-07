@@ -537,8 +537,8 @@ defmodule ElixirMpesa.Transactions do
 
   @doc false
   defp extract_options(options \\ []) do
-    api_type = Keyword.get(options, :api_type, Application.get_env(:ex_mpesa, :api_type))
-    url_context = Keyword.get(options, :url_context, Application.get_env(:ex_mpesa, :url_context))
+    api_type = Keyword.get(options, :api_type, Application.get_env(:elixir_mpesa, :api_type))
+    url_context = Keyword.get(options, :url_context, Application.get_env(:elixir_mpesa, :url_context))
 
     {api_type, url_context}
   end

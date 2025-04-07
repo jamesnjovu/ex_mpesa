@@ -1,8 +1,8 @@
 # ElixirMpesa
 
-[![Hex.pm](https://img.shields.io/hexpm/v/ex_mpesa.svg)](https://hex.pm/packages/ex_mpesa)
-[![Hex.pm](https://img.shields.io/hexpm/dt/ex_mpesa.svg)](https://hex.pm/packages/ex_mpesa)
-[![Hex.pm](https://img.shields.io/hexpm/l/ex_mpesa.svg)](https://hex.pm/packages/ex_mpesa)
+[![Hex.pm](https://img.shields.io/hexpm/v/elixir_mpesa.svg)](https://hex.pm/packages/elixir_mpesa)
+[![Hex.pm](https://img.shields.io/hexpm/dt/elixir_mpesa.svg)](https://hex.pm/packages/elixir_mpesa)
+[![Hex.pm](https://img.shields.io/hexpm/l/elixir_mpesa.svg)](https://hex.pm/packages/elixir_mpesa)
 
 An Elixir library for integrating with the Vodacom M-Pesa OpenAPI. This package provides a simple and elegant way to integrate M-Pesa payment services into your Elixir applications.
 
@@ -18,12 +18,12 @@ An Elixir library for integrating with the Vodacom M-Pesa OpenAPI. This package 
 
 ## Installation
 
-Add `ex_mpesa` to your list of dependencies in `mix.exs`:
+Add `elixir_mpesa` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
   [
-    {:ex_mpesa, "~> 0.1.0"}
+    {:elixir_mpesa, "~> 0.1.0"}
   ]
 end
 ```
@@ -33,7 +33,7 @@ end
 Add the following configuration to your `config/config.exs` file:
 
 ```elixir
-config :ex_mpesa,
+config :elixir_mpesa,
   api_type: "sandbox", # or "openapi" for production
   input_currency: "LSL", # Currency code (e.g., "LSL" for Lesotho Loti)
   input_country: "LES", # Country code

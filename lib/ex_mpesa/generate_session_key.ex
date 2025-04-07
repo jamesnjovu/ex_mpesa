@@ -167,10 +167,10 @@ defmodule ElixirMpesa.GenerateSessionKey do
 
   @doc false
   defp extract_options(options \\ []) do
-    public_key = Keyword.get(options, :public_key, Application.get_env(:ex_mpesa, :public_key))
-    api_key = Keyword.get(options, :api_key, Application.get_env(:ex_mpesa, :api_key))
-    api_type = Keyword.get(options, :api_type, Application.get_env(:ex_mpesa, :api_type))
-    url_context = Keyword.get(options, :url_context, Application.get_env(:ex_mpesa, :url_context))
+    public_key = Keyword.get(options, :public_key, Application.get_env(:elixir_mpesa, :public_key))
+    api_key = Keyword.get(options, :api_key, Application.get_env(:elixir_mpesa, :api_key))
+    api_type = Keyword.get(options, :api_type, Application.get_env(:elixir_mpesa, :api_type))
+    url_context = Keyword.get(options, :url_context, Application.get_env(:elixir_mpesa, :url_context))
 
     {public_key, api_key, api_type, url_context}
   end
