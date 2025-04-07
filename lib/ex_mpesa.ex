@@ -1,11 +1,11 @@
-defmodule ExMpesa do
-  alias ExMpesa.{
+defmodule ElixirMpesa do
+  alias ElixirMpesa.{
     GenerateSessionKey,
     Transactions,
   }
 
   @moduledoc """
-  ExMpesa is an Elixir library for integrating with Vodacom M-Pesa OpenAPI.
+  ElixirMpesa is an Elixir library for integrating with Vodacom M-Pesa OpenAPI.
 
   This library provides functions to interact with various M-Pesa services including:
   - Session key generation and management
@@ -34,14 +34,14 @@ defmodule ExMpesa do
 
   ```elixir
   # Encrypt your API key
-  {:ok, encrypted_api_key} = ExMpesa.encrypt_api_key()
+  {:ok, encrypted_api_key} = ElixirMpesa.encrypt_api_key()
 
   # Generate a session key
-  {:ok, session_data} = ExMpesa.generate_session_key(encrypted_api_key)
+  {:ok, session_data} = ElixirMpesa.generate_session_key(encrypted_api_key)
   session_key = session_data["output_SessionID"]
 
   # Encrypt the session key for use in subsequent requests
-  {:ok, encrypted_session_key} = ExMpesa.encrypt_session_key(session_key)
+  {:ok, encrypted_session_key} = ElixirMpesa.encrypt_session_key(session_key)
 
   # Make a C2B payment
   payment_data = %{
@@ -55,7 +55,7 @@ defmodule ExMpesa do
     "input_PurchasedItemsDesc" => "Test purchase"
   }
 
-  {:ok, result} = ExMpesa.c2b_single_stage(payment_data, encrypted_session_key)
+  {:ok, result} = ElixirMpesa.c2b_single_stage(payment_data, encrypted_session_key)
   ```
   """
 
@@ -71,14 +71,14 @@ defmodule ExMpesa do
 
   ## Examples
 
-      iex> ExMpesa.encrypt_api_key()
+      iex> ElixirMpesa.encrypt_api_key()
       {:ok, "encrypted_api_key_string"}
 
-      iex> ExMpesa.encrypt_api_key([public_key: "custom_public_key", api_key: "custom_api_key"])
+      iex> ElixirMpesa.encrypt_api_key([public_key: "custom_public_key", api_key: "custom_api_key"])
       {:ok, "encrypted_api_key_string"}
 
   """
-  def encrypt_api_key(options \\ []), do: ExMpesa.GenerateSessionKey.encrypt_api_key(options)
+  def encrypt_api_key(options \\ []), do: ElixirMpesa.GenerateSessionKey.encrypt_api_key(options)
 
   @doc """
   Generates a session key using the encrypted API key.
@@ -95,15 +95,15 @@ defmodule ExMpesa do
 
   ## Examples
 
-      iex> {:ok, encrypted_api_key} = ExMpesa.encrypt_api_key()
-      iex> ExMpesa.generate_session_key(encrypted_api_key)
+      iex> {:ok, encrypted_api_key} = ElixirMpesa.encrypt_api_key()
+      iex> ElixirMpesa.generate_session_key(encrypted_api_key)
       {:ok, %{"output_ResponseCode" => "INS-0", "output_ResponseDesc" => "Request processed successfully", "output_SessionID" => "session_key_string"}}
 
-      iex> ExMpesa.generate_session_key()  # Uses the default configured API key
+      iex> ElixirMpesa.generate_session_key()  # Uses the default configured API key
       {:ok, %{"output_ResponseCode" => "INS-0", "output_ResponseDesc" => "Request processed successfully", "output_SessionID" => "session_key_string"}}
 
   """
-  def generate_session_key(encrypt_api_key \\ nil, options \\ []), do: ExMpesa.GenerateSessionKey.generate_output_session_id(encrypt_api_key, options)
+  def generate_session_key(encrypt_api_key \\ nil, options \\ []), do: ElixirMpesa.GenerateSessionKey.generate_output_session_id(encrypt_api_key, options)
 
   @doc """
   Encrypts a session key using the configured public key.
@@ -119,13 +119,13 @@ defmodule ExMpesa do
 
   ## Examples
 
-      iex> {:ok, session_result} = ExMpesa.generate_session_key()
+      iex> {:ok, session_result} = ElixirMpesa.generate_session_key()
       iex> session_key = session_result["output_SessionID"]
-      iex> ExMpesa.encrypt_session_key(session_key)
+      iex> ElixirMpesa.encrypt_session_key(session_key)
       {:ok, "encrypted_session_key_string"}
 
   """
-  def encrypt_session_key(session_key, options \\ []), do: ExMpesa.GenerateSessionKey.encrypt_session_id(session_key, options)
+  def encrypt_session_key(session_key, options \\ []), do: ElixirMpesa.GenerateSessionKey.encrypt_session_id(session_key, options)
 
   @doc """
   Performs a Customer to Business (C2B) single-stage payment.
@@ -159,11 +159,11 @@ defmodule ExMpesa do
       ...>   "input_TransactionReference" => "T12344C",
       ...>   "input_PurchasedItemsDesc" => "Test purchase"
       ...> }
-      iex> ExMpesa.c2b_single_stage(payment_data, encrypted_session_key)
+      iex> ElixirMpesa.c2b_single_stage(payment_data, encrypted_session_key)
       {:ok, %{"output_ResponseCode" => "INS-0", "output_ResponseDesc" => "Request processed successfully", ...}}
 
   """
-  def c2b_single_stage(body, encrypted_session_key, options \\ []), do: ExMpesa.Transactions.c2b_single_stage(body, encrypted_session_key, options)
+  def c2b_single_stage(body, encrypted_session_key, options \\ []), do: ElixirMpesa.Transactions.c2b_single_stage(body, encrypted_session_key, options)
 
   @doc """
   Performs a Business to Customer (B2C) single-stage payment.
@@ -197,11 +197,11 @@ defmodule ExMpesa do
       ...>   "input_TransactionReference" => "T12344C",
       ...>   "input_PaymentItemsDesc" => "Salary payment"
       ...> }
-      iex> ExMpesa.b2c_single_stage(payment_data, encrypted_session_key)
+      iex> ElixirMpesa.b2c_single_stage(payment_data, encrypted_session_key)
       {:ok, %{"output_ResponseCode" => "INS-0", "output_ResponseDesc" => "Request processed successfully", ...}}
 
   """
-  def b2c_single_stage(body, encrypted_session_key, options \\ []), do: ExMpesa.Transactions.b2c_single_stage(body, encrypted_session_key, options)
+  def b2c_single_stage(body, encrypted_session_key, options \\ []), do: ElixirMpesa.Transactions.b2c_single_stage(body, encrypted_session_key, options)
 
   @doc """
   Performs a Business to Business (B2B) single-stage payment.
@@ -235,11 +235,11 @@ defmodule ExMpesa do
       ...>   "input_TransactionReference" => "T12344C",
       ...>   "input_PurchasedItemsDesc" => "Invoice payment"
       ...> }
-      iex> ExMpesa.b2b_single_stage(payment_data, encrypted_session_key)
+      iex> ElixirMpesa.b2b_single_stage(payment_data, encrypted_session_key)
       {:ok, %{"output_ResponseCode" => "INS-0", "output_ResponseDesc" => "Request processed successfully", ...}}
 
   """
-  def b2b_single_stage(body, encrypted_session_key, options \\ []), do: ExMpesa.Transactions.b2b_single_stage(body, encrypted_session_key, options)
+  def b2b_single_stage(body, encrypted_session_key, options \\ []), do: ElixirMpesa.Transactions.b2b_single_stage(body, encrypted_session_key, options)
 
   @doc """
   Queries the status of a transaction.
@@ -265,11 +265,11 @@ defmodule ExMpesa do
       ...>   "input_ThirdPartyConversationID" => "asv02e5958774f7ba228d83d0d689761",
       ...>   "input_Country" => "LES"
       ...> }
-      iex> ExMpesa.query_transaction_status(query_data, encrypted_session_key)
+      iex> ElixirMpesa.query_transaction_status(query_data, encrypted_session_key)
       {:ok, %{"output_ResponseCode" => "INS-0", "output_ResponseDesc" => "Request processed successfully", ...}}
 
   """
-  def query_transaction_status(body, encrypted_session_key, options \\ []), do: ExMpesa.Transactions.query_status(body, encrypted_session_key, options)
+  def query_transaction_status(body, encrypted_session_key, options \\ []), do: ElixirMpesa.Transactions.query_status(body, encrypted_session_key, options)
 
   @doc """
   Creates a direct debit mandate.
@@ -299,11 +299,11 @@ defmodule ExMpesa do
       ...>   "input_ThirdPartyConversationID" => "asv02e5958774f7ba228d83d0d689761",
       ...>   "input_ThirdPartyReference" => "3333"
       ...> }
-      iex> ExMpesa.direct_debit_creation(direct_debit_data, encrypted_session_key)
+      iex> ElixirMpesa.direct_debit_creation(direct_debit_data, encrypted_session_key)
       {:ok, %{"output_ResponseCode" => "INS-0", "output_ResponseDesc" => "Request processed successfully", ...}}
 
   """
-  def direct_debit_creation(body, encrypted_session_key, options \\ []), do: ExMpesa.Transactions.direct_debit_creation(body, encrypted_session_key, options)
+  def direct_debit_creation(body, encrypted_session_key, options \\ []), do: ElixirMpesa.Transactions.direct_debit_creation(body, encrypted_session_key, options)
 
   @doc """
   Processes a direct debit payment.
@@ -335,11 +335,11 @@ defmodule ExMpesa do
       ...>   "input_ThirdPartyConversationID" => "asv02e5958774f7ba228d83d0d689761",
       ...>   "input_ThirdPartyReference" => "3333"
       ...> }
-      iex> ExMpesa.direct_debit_payment(payment_data, encrypted_session_key)
+      iex> ElixirMpesa.direct_debit_payment(payment_data, encrypted_session_key)
       {:ok, %{"output_ResponseCode" => "INS-0", "output_ResponseDesc" => "Request processed successfully", ...}}
 
   """
-  def direct_debit_payment(body, encrypted_session_key, options \\ []), do: ExMpesa.Transactions.direct_debit_payment(body, encrypted_session_key, options)
+  def direct_debit_payment(body, encrypted_session_key, options \\ []), do: ElixirMpesa.Transactions.direct_debit_payment(body, encrypted_session_key, options)
 
   @doc """
   Queries a beneficiary's name based on their mobile number.
@@ -365,11 +365,11 @@ defmodule ExMpesa do
       ...>   "input_ServiceProviderCode" => "00000",
       ...>   "input_ThirdPartyConversationID" => "asv02e5958774f7ba228d83d0d689761"
       ...> }
-      iex> ExMpesa.query_beneficiary_name(query_data, encrypted_session_key)
+      iex> ElixirMpesa.query_beneficiary_name(query_data, encrypted_session_key)
       {:ok, %{"output_ResponseCode" => "INS-0", "output_ResponseDesc" => "Request processed successfully", "output_CustomerFirstName" => "John", "output_CustomerLastName" => "Doe"}}
 
   """
-  def query_beneficiary_name(body, encrypted_session_key, options \\ []), do: ExMpesa.Transactions.query_beneficiary_name(body, encrypted_session_key, options)
+  def query_beneficiary_name(body, encrypted_session_key, options \\ []), do: ElixirMpesa.Transactions.query_beneficiary_name(body, encrypted_session_key, options)
 
   @doc """
   Queries the status of a direct debit mandate.
@@ -397,11 +397,11 @@ defmodule ExMpesa do
       ...>   "input_ThirdPartyConversationID" => "asv02e5958774f7ba228d83d0d689761",
       ...>   "input_ThirdPartyReference" => "3333"
       ...> }
-      iex> ExMpesa.query_direct_debit(query_data, encrypted_session_key)
+      iex> ElixirMpesa.query_direct_debit(query_data, encrypted_session_key)
       {:ok, %{"output_ResponseCode" => "INS-0", "output_ResponseDesc" => "Request processed successfully", ...}}
 
   """
-  def query_direct_debit(body, encrypted_session_key, options \\ []), do: ExMpesa.Transactions.query_direct_debit(body, encrypted_session_key, options)
+  def query_direct_debit(body, encrypted_session_key, options \\ []), do: ElixirMpesa.Transactions.query_direct_debit(body, encrypted_session_key, options)
 
   @doc """
   Cancels a direct debit mandate.
@@ -429,10 +429,10 @@ defmodule ExMpesa do
       ...>   "input_ThirdPartyConversationID" => "asv02e5958774f7ba228d83d0d689761",
       ...>   "input_ThirdPartyReference" => "3333"
       ...> }
-      iex> ExMpesa.direct_debit_cancel(cancel_data, encrypted_session_key)
+      iex> ElixirMpesa.direct_debit_cancel(cancel_data, encrypted_session_key)
       {:ok, %{"output_ResponseCode" => "INS-0", "output_ResponseDesc" => "Request processed successfully", ...}}
 
   """
-  def direct_debit_cancel(body, encrypted_session_key, options \\ []), do: ExMpesa.Transactions.direct_debit_cancel(body, encrypted_session_key, options)
+  def direct_debit_cancel(body, encrypted_session_key, options \\ []), do: ElixirMpesa.Transactions.direct_debit_cancel(body, encrypted_session_key, options)
 
 end

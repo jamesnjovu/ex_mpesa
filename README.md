@@ -1,4 +1,4 @@
-# ExMpesa
+# ElixirMpesa
 
 [![Hex.pm](https://img.shields.io/hexpm/v/ex_mpesa.svg)](https://hex.pm/packages/ex_mpesa)
 [![Hex.pm](https://img.shields.io/hexpm/dt/ex_mpesa.svg)](https://hex.pm/packages/ex_mpesa)
@@ -50,14 +50,14 @@ Before making any transaction requests, you need to generate a session key:
 
 ```elixir
 # Encrypt your API key
-{:ok, encrypted_api_key} = ExMpesa.encrypt_api_key()
+{:ok, encrypted_api_key} = ElixirMpesa.encrypt_api_key()
 
 # Generate a session key
-{:ok, session_data} = ExMpesa.generate_session_key(encrypted_api_key)
+{:ok, session_data} = ElixirMpesa.generate_session_key(encrypted_api_key)
 session_key = session_data["output_SessionID"]
 
 # Encrypt the session key for use in subsequent requests
-{:ok, encrypted_session_key} = ExMpesa.encrypt_session_key(session_key)
+{:ok, encrypted_session_key} = ElixirMpesa.encrypt_session_key(session_key)
 ```
 
 ### Customer to Business (C2B) Payment
@@ -74,7 +74,7 @@ payment_data = %{
   "input_PurchasedItemsDesc" => "Test purchase" # Description
 }
 
-{:ok, result} = ExMpesa.c2b_single_stage(payment_data, encrypted_session_key)
+{:ok, result} = ElixirMpesa.c2b_single_stage(payment_data, encrypted_session_key)
 ```
 
 ### Business to Customer (B2C) Payment
@@ -91,7 +91,7 @@ payment_data = %{
   "input_PaymentItemsDesc" => "Salary payment" # Description
 }
 
-{:ok, result} = ExMpesa.b2c_single_stage(payment_data, encrypted_session_key)
+{:ok, result} = ElixirMpesa.b2c_single_stage(payment_data, encrypted_session_key)
 ```
 
 ### Query Transaction Status
@@ -104,7 +104,7 @@ query_data = %{
   "input_Country" => "LES"
 }
 
-{:ok, result} = ExMpesa.query_transaction_status(query_data, encrypted_session_key)
+{:ok, result} = ElixirMpesa.query_transaction_status(query_data, encrypted_session_key)
 ```
 
 ### Direct Debit Operations
@@ -121,7 +121,7 @@ direct_debit_data = %{
   "input_ThirdPartyReference" => "3333" # Your reference
 }
 
-{:ok, result} = ExMpesa.direct_debit_creation(direct_debit_data, encrypted_session_key)
+{:ok, result} = ElixirMpesa.direct_debit_creation(direct_debit_data, encrypted_session_key)
 ```
 
 #### Process Direct Debit Payment
@@ -137,7 +137,7 @@ payment_data = %{
   "input_ThirdPartyReference" => "3333" # Your reference
 }
 
-{:ok, result} = ExMpesa.direct_debit_payment(payment_data, encrypted_session_key)
+{:ok, result} = ElixirMpesa.direct_debit_payment(payment_data, encrypted_session_key)
 ```
 
 ## Error Handling
@@ -145,7 +145,7 @@ payment_data = %{
 All functions return tagged tuples in the format `{:ok, result}` or `{:error, reason}`:
 
 ```elixir
-case ExMpesa.c2b_single_stage(payment_data, encrypted_session_key) do
+case ElixirMpesa.c2b_single_stage(payment_data, encrypted_session_key) do
   {:ok, result} ->
     # Handle successful transaction
     IO.inspect(result)
@@ -164,7 +164,7 @@ All functions accept an optional keyword list of options that can override the d
 
 ```elixir
 # Override default configuration for a single request
-ExMpesa.c2b_single_stage(
+ElixirMpesa.c2b_single_stage(
   payment_data, 
   encrypted_session_key, 
   [api_type: "openapi", url_context: "vodacomTZN"]

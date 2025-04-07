@@ -1,5 +1,5 @@
-defmodule ExMpesa.GenerateSessionKey do
-  alias ExMpesa.HttpRequest
+defmodule ElixirMpesa.GenerateSessionKey do
+  alias ElixirMpesa.HttpRequest
 
   @moduledoc """
   Handles the session key generation and management for M-Pesa OpenAPI.
@@ -19,14 +19,14 @@ defmodule ExMpesa.GenerateSessionKey do
   ## Example
 
       # Encrypt the API key
-      {:ok, encrypted_api_key} = ExMpesa.GenerateSessionKey.encrypt_api_key()
+      {:ok, encrypted_api_key} = ElixirMpesa.GenerateSessionKey.encrypt_api_key()
 
       # Generate a session ID using the encrypted API key
-      {:ok, session_data} = ExMpesa.GenerateSessionKey.generate_output_session_id(encrypted_api_key)
+      {:ok, session_data} = ElixirMpesa.GenerateSessionKey.generate_output_session_id(encrypted_api_key)
       session_key = session_data["output_SessionID"]
 
       # Encrypt the session key for use in transactions
-      {:ok, encrypted_session_key} = ExMpesa.GenerateSessionKey.encrypt_session_id(session_key)
+      {:ok, encrypted_session_key} = ElixirMpesa.GenerateSessionKey.encrypt_session_id(session_key)
 
   """
 
@@ -50,10 +50,10 @@ defmodule ExMpesa.GenerateSessionKey do
 
   ## Examples
 
-      iex> ExMpesa.GenerateSessionKey.encrypt_api_key()
+      iex> ElixirMpesa.GenerateSessionKey.encrypt_api_key()
       {:ok, "encrypted_api_key_string"}
 
-      iex> ExMpesa.GenerateSessionKey.encrypt_api_key([public_key: "custom_public_key"])
+      iex> ElixirMpesa.GenerateSessionKey.encrypt_api_key([public_key: "custom_public_key"])
       {:ok, "encrypted_api_key_string"}
 
   """
@@ -84,7 +84,7 @@ defmodule ExMpesa.GenerateSessionKey do
 
   ## Examples
 
-      iex> ExMpesa.GenerateSessionKey.encrypt_session_id("session_id_string")
+      iex> ElixirMpesa.GenerateSessionKey.encrypt_session_id("session_id_string")
       {:ok, "encrypted_session_id_string"}
 
   """
@@ -113,8 +113,8 @@ defmodule ExMpesa.GenerateSessionKey do
 
   ## Examples
 
-      iex> {:ok, encrypted_key} = ExMpesa.GenerateSessionKey.encrypt_api_key()
-      iex> ExMpesa.GenerateSessionKey.generate_output_session_id(encrypted_key)
+      iex> {:ok, encrypted_key} = ElixirMpesa.GenerateSessionKey.encrypt_api_key()
+      iex> ElixirMpesa.GenerateSessionKey.generate_output_session_id(encrypted_key)
       {:ok, %{"output_ResponseCode" => "INS-0", "output_ResponseDesc" => "Request processed successfully", "output_SessionID" => "session_id_string"}}
 
   """

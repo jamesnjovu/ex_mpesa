@@ -1,6 +1,6 @@
 import Config
 
-config :ex_mpesa,
+config :elixir_mpesa,
  api_type: "sandbox",
  input_currency: "LSL",
  input_country: "LES",

@@ -1,6 +1,6 @@
-defmodule ExMpesaTest do
+defmodule ElixirMpesaTest do
   use ExUnit.Case
-  doctest ExMpesa
+  doctest ElixirMpesa
 
   test "encrypt_api_key returns a tuple with ok atom" do
     # Mock the public key and api_key for testing
@@ -20,7 +20,7 @@ defmodule ExMpesaTest do
     :meck.expect(:public_key, :encrypt_public, fn _, _, _ -> "encrypted" end)
 
     # Test the function
-    assert {:ok, _} = ExMpesa.encrypt_api_key()
+    assert {:ok, _} = ElixirMpesa.encrypt_api_key()
 
     # Clean up mocks
     :meck.unload(Application)

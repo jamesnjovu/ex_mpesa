@@ -1,4 +1,4 @@
-defmodule ExMpesa.MixProject do
+defmodule ElixirMpesa.MixProject do
   use Mix.Project
 
   @version "0.1.0"
@@ -7,7 +7,7 @@ defmodule ExMpesa.MixProject do
 
   def project do
     [
-      app: :ex_mpesa,
+      app: :elixir_mpesa,
       version: @version,
       elixir: "~> 1.14",
       start_permanent: Mix.env() == :prod,
@@ -15,7 +15,7 @@ defmodule ExMpesa.MixProject do
       package: package(),
       deps: deps(),
       docs: docs(),
-      name: "ExMpesa",
+      name: "ElixirMpesa",
       source_url: @source_url
     ]
   end
@@ -24,7 +24,7 @@ defmodule ExMpesa.MixProject do
   def application do
     [
       extra_applications: [:logger],
-      mod: {ExMpesa.Application, []}
+      mod: {ElixirMpesa.Application, []}
     ]
   end
 
@@ -55,17 +55,17 @@ defmodule ExMpesa.MixProject do
       formatters: ["html"],
       groups_for_modules: [
         "Core": [
-          ExMpesa,
-          ExMpesa.Application
+          ElixirMpesa,
+          ElixirMpesa.Application
         ],
         "Session Management": [
-          ExMpesa.GenerateSessionKey
+          ElixirMpesa.GenerateSessionKey
         ],
         "Transactions": [
-          ExMpesa.Transactions
+          ElixirMpesa.Transactions
         ],
         "Internal": [
-          ExMpesa.HttpRequest
+          ElixirMpesa.HttpRequest
         ]
       ]
     ]

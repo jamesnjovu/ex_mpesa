@@ -1,4 +1,4 @@
-defmodule ExMpesa.HttpRequest do
+defmodule ElixirMpesa.HttpRequest do
   @moduledoc false
   @doc """
   Handles HTTP requests to the M-Pesa API.
@@ -29,7 +29,7 @@ defmodule ExMpesa.HttpRequest do
 
   ## Examples
 
-      iex> ExMpesa.HttpRequest.header("encrypted_session_key")
+      iex> ElixirMpesa.HttpRequest.header("encrypted_session_key")
       [
         {"Content-Type", "application/json"},
         {"Origin", "*"},
