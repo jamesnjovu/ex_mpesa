@@ -127,18 +127,27 @@ defmodule ElixirMpesa.GenerateSessionKey do
   defp encrypt(public_key_b64, api_key) when is_binary(public_key_b64) and is_binary(api_key) do
     try do
       # Decode Base64 public key
-      {:ok, key_der} = Base.decode64(public_key_b64)
+      Base.decode64(public_key_b64)
+      |> case do
+        {:ok, key_der} ->
+          # Decode SubjectPublicKeyInfo (DER)
+          {:SubjectPublicKeyInfo, _, rsa_key_bin} =
+            :public_key.der_decode(:SubjectPublicKeyInfo, key_der)
 
-      # Decode SubjectPublicKeyInfo (DER)
-      {:SubjectPublicKeyInfo, _, rsa_key_bin} = :public_key.der_decode(:SubjectPublicKeyInfo, key_der)
+          # Decode the raw RSA public key
+          {:RSAPublicKey, modulus, exponent} = :public_key.der_decode(:RSAPublicKey, rsa_key_bin)
 
-      # Decode the raw RSA public key
-      {:"RSAPublicKey", modulus, exponent} = :public_key.der_decode(:RSAPublicKey, rsa_key_bin)
+          # Encrypt using :public_key.encrypt_public
+          {:ok,
+           Base.encode64(
+             :public_key.encrypt_public(api_key, {:RSAPublicKey, modulus, exponent}, [
+               :rsa_pkcs1_padding
+             ])
+           )}
 
-      # Encrypt using :public_key.encrypt_public
-      encrypted = :public_key.encrypt_public(api_key, {:"RSAPublicKey", modulus, exponent}, [:rsa_pkcs1_padding])
-
-      {:ok, Base.encode64(encrypted)}
+        error ->
+          error
+      end
     rescue
       e in RuntimeError ->
         {:error, "Encryption failed: #{Exception.message(e)}"}
@@ -151,6 +160,7 @@ defmodule ElixirMpesa.GenerateSessionKey do
   @doc false
   defp auth(context, url_context, {:ok, encrypt_api_key}) do
     uri = "https://openapi.m-pesa.com/#{context}/ipg/v2/#{url_context}/getSession/"
+
     HttpRequest.get(uri, %{}, HttpRequest.header(encrypt_api_key))
     |> HttpRequest.handle_response()
   end
@@ -161,16 +171,21 @@ defmodule ElixirMpesa.GenerateSessionKey do
   @doc false
   defp auth(context, url_context, encrypt_api_key) do
     uri = "https://openapi.m-pesa.com/#{context}/ipg/v2/#{url_context}/getSession/"
+
     HttpRequest.get(uri, %{}, HttpRequest.header(encrypt_api_key))
     |> HttpRequest.handle_response()
   end
 
   @doc false
   defp extract_options(options \\ []) do
-    public_key = Keyword.get(options, :public_key, Application.get_env(:elixir_mpesa, :public_key))
+    public_key =
+      Keyword.get(options, :public_key, Application.get_env(:elixir_mpesa, :public_key))
+
     api_key = Keyword.get(options, :api_key, Application.get_env(:elixir_mpesa, :api_key))
     api_type = Keyword.get(options, :api_type, Application.get_env(:elixir_mpesa, :api_type))
-    url_context = Keyword.get(options, :url_context, Application.get_env(:elixir_mpesa, :url_context))
+
+    url_context =
+      Keyword.get(options, :url_context, Application.get_env(:elixir_mpesa, :url_context))
 
     {public_key, api_key, api_type, url_context}
   end
